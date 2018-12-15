@@ -1,4 +1,5 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu } = require('electron')
+const menu = require('./menu.js')
 
 let w
 
@@ -15,6 +16,7 @@ function createWindow() {
     // when you should delete the corresponding element.
     w = null
   })
+  menu()
 }
 
 app.on('ready', createWindow)
