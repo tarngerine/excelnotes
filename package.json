@@ -1,0 +1,16 @@
+{
+  "name": "excelnote",
+  "version": "0.0.1",
+  "description": "markdown notes but with cool excel functionalities",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Julius Tarng",
+  "devDependencies": {
+    "electron": "^3.0.12"
+  },
+  "dependencies": {
+    "marked": "^0.5.2"
+  }
+}
