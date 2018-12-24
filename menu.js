@@ -1,6 +1,53 @@
-const { app, dialog, Menu } = require('electron')
-module.exports = function() {
+const { app, Menu, dialog } = require('electron')
+
+module.exports = function(w, store) {
   const template = [
+    {
+      label: 'File',
+      submenu: [
+        {
+          label:  'New File',
+          accelerator: 'cmd+n',
+          click: () => {
+            // w.webContents.send()
+          }
+        },
+        {
+          label: 'Open...',
+          accelerator: 'cmd+o',
+          click: () => {
+            dialog.showOpenDialog({
+              filters: [
+                {
+                  name: 'Markdown',
+                  extensions: ['md']
+                }
+              ],
+              properties: [
+                'openFile'
+              ]
+            }, (paths) => {
+              store.set('openFilePath', paths[0])
+              console.log(paths)
+            })
+          }
+        },
+        {
+          label: 'Save',
+          accelerator: 'cmd+s',
+          click: () => {
+            if (store.get('openFilePath') === null) {
+
+              dialog.showSaveDialog({
+                
+              }, (path) => {
+                store.set('openFilePath', path)
+              })
+            }
+          }
+        }
+      ]
+    },
     {
       label: 'Edit',
       submenu: [
