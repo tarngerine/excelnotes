@@ -1,4 +1,5 @@
 const { app, Menu, dialog } = require('electron')
+const { open, save } = require('./file.js')
 
 module.exports = function(w, store) {
   const template = [
@@ -28,7 +29,7 @@ module.exports = function(w, store) {
               ]
             }, (paths) => {
               store.set('openFilePath', paths[0])
-              console.log(paths)
+              open(paths[0], w)
             })
           }
         },

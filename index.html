@@ -5,6 +5,13 @@
     <title>Cool & Excellent Notes</title>
   </head>
   <body>
+    <script>
+      require('electron').ipcRenderer.on('openFile', (e, m) => {
+        document
+          .getElementById('editor')
+          .innerHTML = require('marked')(m);
+      });
+    </script>
     <div id='editor' contenteditable='true'>
       Hi, this is for cool people!
     </div>
