@@ -3,18 +3,11 @@
   <head>
     <meta charset='UTF-8'>
     <title>Cool & Excellent Notes</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
   </head>
   <body>
-    <script>
-      require('electron').ipcRenderer.on('openFile', (e, m) => {
-        document
-          .getElementById('editor')
-          .innerHTML = require('marked')(m);
-      });
-    </script>
-    <div id='editor' contenteditable='true'>
-      Hi, this is for cool people!
-    </div>
-    <div class='render'></div>
+    <textarea id='editor' class='pane'></textarea>
+    <div id='viewer' class='pane'></div>
+    <script src='renderer.js'></script>
   </body>
 </html>

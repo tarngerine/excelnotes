@@ -1,0 +1,41 @@
+body {
+  font-family: sans-serif;
+}
+
+.pane {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: .5em;
+}
+
+#editor {
+  left: 0;
+  background: #123;
+  color: #fff;
+}
+
+#viewer {
+  right: 0;
+  word-wrap: break-word;
+}
+
+#viewer p {
+  margin-bottom: 1em;
+}
+
+/* Resets */
+html, body, div, textarea {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin-top: 0;
+}
