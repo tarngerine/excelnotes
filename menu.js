@@ -1,5 +1,5 @@
-const { app, Menu, dialog } = require('electron')
-const { open, save } = require('./file.js')
+const { app, Menu, dialog } = require('electron');
+const { open, save } = require('./file.js');
 
 module.exports = function(w, store) {
   const template = [
@@ -10,7 +10,6 @@ module.exports = function(w, store) {
           label:  'New File',
           accelerator: 'cmd+n',
           click: () => {
-            // w.webContents.send()
           }
         },
         {
@@ -28,8 +27,8 @@ module.exports = function(w, store) {
                 'openFile'
               ]
             }, (paths) => {
-              store.set('openFilePath', paths[0])
-              open(paths[0], w)
+              store.set('openFilePath', paths[0]);
+              open(paths[0], w);
             })
           }
         },
@@ -93,7 +92,7 @@ module.exports = function(w, store) {
         }
       ]
     }
-  ]
+  ];
 
   if (process.platform === 'darwin') {
     template.unshift({
@@ -109,7 +108,7 @@ module.exports = function(w, store) {
         { type: 'separator' },
         { role: 'quit' }
       ]
-    })
+    });
 
     // Edit menu
     template[1].submenu.push(
@@ -121,7 +120,7 @@ module.exports = function(w, store) {
           { role: 'stopspeaking' }
         ]
       }
-    )
+    );
 
     // Window menu
     template[3].submenu = [
@@ -130,9 +129,9 @@ module.exports = function(w, store) {
       { role: 'zoom' },
       { type: 'separator' },
       { role: 'front' }
-    ]
+    ];
   }
 
-  const menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
 }
