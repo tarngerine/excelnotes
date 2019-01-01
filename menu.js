@@ -1,4 +1,5 @@
-const { app, dialog, Menu } = require('electron');
+const { app, BrowserWindow, dialog, Menu } = require('electron');
+const pathstore = new (require('./ministore.js'))('openWindowPaths');
 const { open, save } = require('./file.js');
 
 module.exports = function() {
@@ -17,35 +18,61 @@ module.exports = function() {
           label: 'Open...',
           accelerator: 'cmd+o',
           click: () => {
-            dialog.showOpenDialog({
-              filters: [
-                {
-                  name: 'Markdown',
-                  extensions: ['md']
+            let win = BrowserWindow.getFocusedWindow();
+            dialog.showOpenDialog(
+              win,
+              {
+                filters: [
+                  {
+                    name: 'Markdown',
+                    extensions: ['md']
+                  }
+                ],
+                properties: [
+                  'openFile'
+                ]
+              }, (paths) => {
+                if (paths === undefined || paths.length === 0) return;
+
+                let existingWin = BrowserWindow.getAllWindows().find((w) => {
+                  return pathstore.get(w.id) === paths[0];
+                });
+
+                if (existingWin !== undefined) {
+                  existingWin.focus();
+                  // TODO: handle changed content in editor OR filesystem
+                  return;
                 }
-              ],
-              properties: [
-                'openFile'
-              ]
-            }, (paths) => {
-              // store.set('openFilePath', paths[0]);
-              open(paths[0]);
-            });
+                app.emit('create-new-window', (win) => {
+                  open(paths[0], win);
+                });
+              }
+            );
           }
         },
         {
           label: 'Save',
           accelerator: 'cmd+s',
           click: () => {
-            // if (store.get('openFilePath') === null) {
-              dialog.showSaveDialog({
-                
-              }, (path) => {
-                save(path);
-              });
-            // } else {
-            //   save(store.get('openFilePath'));
-            // }
+            let win = BrowserWindow.getFocusedWindow();
+            let existingPath = pathstore.get(win.id);
+            if (existingPath === undefined) {
+              dialog.showSaveDialog(
+                win,
+                {
+                  filters: [
+                    {
+                      name: 'Markdown',
+                      extensions: ['md']
+                    }
+                  ]
+                }, (path) => {
+                  if (path !== undefined) save(path, win);
+                }
+              );
+            } else {
+              save(existingPath, win);
+            }
           }
         }
       ]

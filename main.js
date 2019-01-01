@@ -1,41 +1,46 @@
 'use strict';
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
+const store = new (require('electron-store'))();
+const pathstore = new (require('./ministore.js'))('openWindowPaths');
 const menu = require('./menu.js');
 
-let w;
-
 function createWindow() {
-  w = new BrowserWindow({
+  let w = new BrowserWindow({
     width: 800,
     height: 600,
+    title: 'Untitled',
+    acceptFirstMouse: true,
   });
-  // w.setRepresentedFilename('')
-  // w.setDocumentEdited(true)
   w.loadFile('index.html');
   // w.webContents.openDevTools('undocked');
-  w.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    w = null;
-  })
+  pathstore.set(w.id, undefined);
+
+  // End lifecycle
+  w.on('close', () => pathstore.set(w.id));
+  w.on('closed', () => w = null);
+
+  return w;
 }
 
 app.on('ready', () => {
+  store.clear(); // Remove if we eventually actually need persistent store
   menu();
   createWindow();
 });
 
-app.on('create-new-window', createWindow);
+app.on('create-new-window', (callback) => {
+  let w = createWindow();
+  if (callback) callback(w);
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
-})
+});
 
 app.on('activate', () => {
-  if (w === null) {
+  if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
-})
+});
