@@ -1,13 +1,13 @@
 const fs = require('fs');
 
-function open(path, w) {
+function open(path) {
   fs.readFile(path, 'utf8', (err, data) => {
     if (err) throw err;
     w.webContents.send('openFile', data);
   });
 }
 
-function save() {
+function save(path) {
 
 }
 

@@ -1,7 +1,7 @@
-const { app, Menu, dialog } = require('electron');
+const { app, dialog, Menu } = require('electron');
 const { open, save } = require('./file.js');
 
-module.exports = function(w, store) {
+module.exports = function() {
   const template = [
     {
       label: 'File',
@@ -10,6 +10,7 @@ module.exports = function(w, store) {
           label:  'New File',
           accelerator: 'cmd+n',
           click: () => {
+            app.emit('create-new-window');
           }
         },
         {
@@ -27,23 +28,24 @@ module.exports = function(w, store) {
                 'openFile'
               ]
             }, (paths) => {
-              store.set('openFilePath', paths[0]);
-              open(paths[0], w);
-            })
+              // store.set('openFilePath', paths[0]);
+              open(paths[0]);
+            });
           }
         },
         {
           label: 'Save',
           accelerator: 'cmd+s',
           click: () => {
-            if (store.get('openFilePath') === null) {
-
+            // if (store.get('openFilePath') === null) {
               dialog.showSaveDialog({
                 
               }, (path) => {
-                store.set('openFilePath', path)
-              })
-            }
+                save(path);
+              });
+            // } else {
+            //   save(store.get('openFilePath'));
+            // }
           }
         }
       ]
@@ -79,8 +81,11 @@ module.exports = function(w, store) {
     {
       role: 'window',
       submenu: [
+        { role: 'close' },
         { role: 'minimize' },
-        { role: 'close' }
+        { role: 'zoom' },
+        { type: 'separator' },
+        { role: 'front' }
       ]
     },
     {
@@ -109,27 +114,6 @@ module.exports = function(w, store) {
         { role: 'quit' }
       ]
     });
-
-    // Edit menu
-    template[1].submenu.push(
-      { type: 'separator' },
-      {
-        label: 'Speech',
-        submenu: [
-          { role: 'startspeaking' },
-          { role: 'stopspeaking' }
-        ]
-      }
-    );
-
-    // Window menu
-    template[3].submenu = [
-      { role: 'close' },
-      { role: 'minimize' },
-      { role: 'zoom' },
-      { type: 'separator' },
-      { role: 'front' }
-    ];
   }
 
   const menu = Menu.buildFromTemplate(template);
