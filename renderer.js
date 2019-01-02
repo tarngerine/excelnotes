@@ -20,6 +20,13 @@ function refreshViewer() {
         token.text = mdmath(token.text);
         lex[i] = token;
       }
+      if (token.type === 'table') {
+        token.cells = token.cells.map((row) => {
+          return row.map((cell) => {
+            return mdmath(cell);
+          })
+        })
+      }
     });
     viewer.innerHTML = marked.parser(lex);
   } catch (error) { console.log(error) }
