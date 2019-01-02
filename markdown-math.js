@@ -6,9 +6,6 @@ let scope = {};
 //   "25": "[=2+3]"
 // }
 function getEquations(text) {
-  let REGEX_CODE_INLINE = /(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/gm;
-  let protectedRanges = findProtectedRanges(REGEX_CODE_INLINE, text);
-
   // [=...] where ... is any mathjs valid thing
   let regex = /\[=[^\r\n\t]+?\]/g;
   let equations = {};
@@ -16,6 +13,11 @@ function getEquations(text) {
   while ((match = regex.exec(text)) != null) {
     equations[match.index] = match[0];
   }
+
+  if (Object.keys(equations).length == 0) return;
+
+  let REGEX_CODE_INLINE = /(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/gm;
+  let protectedRanges = findProtectedRanges(REGEX_CODE_INLINE, text);
 
   for (i in equations) {
     let isProtected = protectedRanges.some((range) => {
@@ -51,13 +53,17 @@ module.exports = (text) => {
     }
 
     // Replace each equation backwards to prevent shifting indices
-    Object.keys(solutions)
-      .sort().reverse().forEach((i) => {
+    let solutionIndices = Object.keys(solutions)
+      .map((i) => parseInt(i))
+      .sort((a,b) => b-a);
+
+    for (let j = 0; j < solutionIndices.length; j++) {
+      let i = solutionIndices[j];
       let iEnd = parseInt(i) + equations[i].length;
       text = text.slice(0, i)
         + solutions[i]
         + text.slice(iEnd, text.length);
-    });
+    }
   }
 
   return text;
