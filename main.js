@@ -7,10 +7,11 @@ const { newFile, open } = require('./file.js');
 
 function createWindow() {
   let w = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 860,
+    height: 560,
     title: 'Untitled',
     acceptFirstMouse: true,
+    backgroundColor: '#232646',
   });
   w.loadFile('index.html');
   // w.webContents.openDevTools('undocked');

@@ -1,3 +1,27 @@
+/* Resets */
+html, body, div, textarea {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+}
+
+html {
+  font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin-top: 0;
+}
+
+textarea {
+  outline: none;
+  border: none;
+  box-shadow: none;
+  resize: none;
+}
+
+/* Normal */
 body {
   font-family: sans-serif;
 }
@@ -15,11 +39,17 @@ body {
 
 #editor {
   left: 0;
-  background: #123;
+  background: #232646;
   color: #fff;
+  caret-color: #d3bcff;
+}
+
+#editor::selection {
+  background: #ab97d0;
 }
 
 #viewer {
+  background: white;
   right: 0;
   word-wrap: break-word;
 }
@@ -28,14 +58,6 @@ body {
   margin-bottom: 1em;
 }
 
-/* Resets */
-html, body, div, textarea {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-size: 1em;
-}
-
-h1, h2, h3, h4, h5, h6, p {
-  margin-top: 0;
+#viewer a {
+  color: #622ec5;
 }
