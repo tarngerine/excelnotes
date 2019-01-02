@@ -1,7 +1,16 @@
 const fs = require('fs');
 const p = require('path');
 const pathstore = new (require('./ministore.js'))('openWindowPaths');
-const { ipcMain } = require('electron');
+const { app, ipcMain } = require('electron');
+
+function newFile() {
+  app.emit('create-new-window', (win) => {
+    win.webContents.once('dom-ready', (e) => {
+      win.webContents.send('openFile',
+        '# Hi, welcome to excelnotes!');
+    });
+  });
+}
 
 function open(path, win) {
   fs.readFile(path, 'utf8', (err, data) => {
@@ -30,5 +39,6 @@ function setWindowPath(win, path) {
   win.setTitle(p.basename(path));
 }
 
+module.exports.newFile = newFile;
 module.exports.open = open;
 module.exports.save = save;

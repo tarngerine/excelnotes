@@ -1,6 +1,6 @@
 const { app, BrowserWindow, dialog, Menu } = require('electron');
 const pathstore = new (require('./ministore.js'))('openWindowPaths');
-const { open, save } = require('./file.js');
+const { newFile, open, save } = require('./file.js');
 
 module.exports = function() {
   const template = [
@@ -11,7 +11,7 @@ module.exports = function() {
           label:  'New File',
           accelerator: 'cmd+n',
           click: () => {
-            app.emit('create-new-window');
+            newFile();
           }
         },
         {

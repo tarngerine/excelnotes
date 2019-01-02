@@ -3,7 +3,6 @@ const Store = require('electron-store');
 function ministore(key) {
   this.key = key;
   let store = new Store();
-  store.set(this.key, {});
 
   this.set = (k, v) => {
     let s = store.get(this.key);
@@ -17,6 +16,9 @@ function ministore(key) {
     let s = store.get(this.key);
     delete s[k];
     store.set(this.key, s);
+  }
+  this.reset = () => {
+    store.set(this.key, {});
   }
   this.store = () => store.get(this.key);
 }

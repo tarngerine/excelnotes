@@ -8,19 +8,31 @@ let editor = document.getElementById('editor');
 let viewer = document.getElementById('viewer');
 
 let renderer = new marked.Renderer();
-renderer.text = (text) => mdmath(text);
+// renderer.text = (t) => mdmath(t);
+// renderer.link = (l, la, t) => {
+//   console.log(t)
+//   return t;
+// };
 marked.setOptions({
   breaks: true,
-  renderer: renderer
+  renderer: renderer,
 });
 
 function refreshViewer() {
-  viewer.innerHTML = marked(editor.value);
+  try {
+    let lex = marked.lexer(editor.value);
+    console.log(lex);
+    lex = lex.map((token) => {
+      return token;
+    });
+    viewer.innerHTML = marked.parse(editor.value);
+  } catch (error) {
+    console.log("Markdown parsing error:");
+    console.log(error);
+  }
 }
 
 // Launch
-editor.value = "# Hi, welcome to excelnotes!"
-refreshViewer();
 editor.focus();
 
 // Update on edit
