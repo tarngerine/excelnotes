@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "electron-store": "^2.0.0",
-    "marked": "^0.5.2"
+    "marked": "^0.5.2",
+    "mathjs": "^5.4.0"
   }
 }

@@ -7,29 +7,22 @@ const win = require('electron').remote.getCurrentWindow();
 let editor = document.getElementById('editor');
 let viewer = document.getElementById('viewer');
 
-let renderer = new marked.Renderer();
-// renderer.text = (t) => mdmath(t);
-// renderer.link = (l, la, t) => {
-//   console.log(t)
-//   return t;
-// };
 marked.setOptions({
   breaks: true,
-  renderer: renderer,
 });
 
+// Parse and render markdown
 function refreshViewer() {
   try {
     let lex = marked.lexer(editor.value);
-    console.log(lex);
-    lex = lex.map((token) => {
-      return token;
+    lex.forEach((token, i) => {
+      if (token.text && token.type !== 'code') {
+        token.text = mdmath(token.text);
+        lex[i] = token;
+      }
     });
-    viewer.innerHTML = marked.parse(editor.value);
-  } catch (error) {
-    console.log("Markdown parsing error:");
-    console.log(error);
-  }
+    viewer.innerHTML = marked.parser(lex);
+  } catch (error) { console.log(error) }
 }
 
 // Launch
