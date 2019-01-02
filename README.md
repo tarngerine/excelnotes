@@ -19,3 +19,6 @@ cd excelnotes
 npm install
 npm start
 ```
+### Demo
+Works in tables:
+![](http://f.cl.ly/items/1p3q0Q23033M2z3t451q/Screen%20Shot%202019-01-02%20at%205.48.52%20PM.png)
